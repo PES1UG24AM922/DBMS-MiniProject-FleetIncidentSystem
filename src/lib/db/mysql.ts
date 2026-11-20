@@ -17,6 +17,7 @@ export function getPool(role: DbRole): Pool {
     const [user, password] = creds[role];
     g._pools![role] = mysql.createPool({
       host: process.env.MYSQL_HOST,
+      port: Number(process.env.MYSQL_PORT ?? 3306),
       database: process.env.MYSQL_DATABASE,
       user,
       password,

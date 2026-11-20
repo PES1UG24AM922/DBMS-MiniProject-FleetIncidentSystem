@@ -2,7 +2,9 @@
 
 DBMS Experiential Learning, Level 3 project. A web application where transport authorities manage buses, drivers, routes and trips, report and resolve incidents, and read dashboards built from the combined history.
 
-**Stack:** Next.js 15 (App Router, TypeScript) - MySQL 8 (relational core) - MongoDB 6+ (incident detail reports and telemetry).
+**Stack:** Next.js 16.4.6 (App Router, TypeScript), MySQL 8 (relational core), MongoDB 6+ (incident detail reports and telemetry).
+
+See the [project report](docs/PROJECT_REPORT.pdf) for the submission rubric, commands and demo evidence.
 
 ## What it demonstrates
 
@@ -19,24 +21,24 @@ DBMS Experiential Learning, Level 3 project. A web application where transport a
 
 ## Prerequisites
 
-Node.js 20 or newer, MySQL 8.0.16 or newer (CHECK constraints and roles), MongoDB 6 or newer with `mongosh`.
+Node.js 20.9 or newer, MySQL 8.0.16 or newer (CHECK constraints and roles), MongoDB 6 or newer with `mongosh`.
 
 ## Setup
 
 ```bash
 # 1. Install dependencies
-npm install
+npm ci
 
 # 2. Create the MySQL database, objects, roles and sample data (asks for the MySQL root password)
 ./db/setup.sh                       # or load schema, procedures, triggers, views, rbac, seed in that order
 
-# 3. Configure the app
+# 3. Configure the app (set MYSQL_PORT if your server uses a port other than 3306)
 cp .env.example .env.local          # edit JWT_SECRET; passwords must match db/rbac.sql
 
 # 4. Give the demo users a real password (Demo@1234)
 npm run seed:users
 
-# 5. Create MongoDB collections and sample documents
+# 5. Create MongoDB collections and sample documents in a new demo database
 mongosh "mongodb://localhost:27017" db/mongo/init.js
 mongosh "mongodb://localhost:27017" db/mongo/seed.js
 
@@ -47,6 +49,20 @@ npm run dev                         # http://localhost:3000
 Demo accounts (password `Demo@1234`): `admin`, `manager1`, `ravi` (driver, own trips only), `anita` (driver).
 
 If MongoDB is not running, the app still works for everything that lives in MySQL; pages show a notice where MongoDB data would appear.
+
+### Restart MongoDB on Windows
+
+If you run MongoDB from the ZIP, keep using the same data directory after each restart. From PowerShell in the project folder, run:
+
+```powershell
+.\scripts\start-mongodb.ps1 -MongodPath 'C:\tools\mongodb\bin\mongod.exe' -DataPath 'C:\data\fleet-mongo'
+```
+
+Replace both paths with the location of your MongoDB executable and the existing directory that holds your database files. Keep this terminal open while running the app. If MongoDB is already running as a Windows service, use the service and skip this command.
+
+Set `MONGODB_URI=mongodb://127.0.0.1:27017` and `MONGODB_DB=transport_nosql` in `.env.local` for the default local configuration. Check the connection with `mongosh "mongodb://127.0.0.1:27017" --eval "db.adminCommand({ping:1})"`. A response with `ok: 1` confirms that MongoDB is reachable. Restart the Next.js dev server if you changed `.env.local`.
+
+For a first-time setup, create an empty data directory before starting MongoDB. Run `db/mongo/init.js` and `db/mongo/seed.js` only to set up a new demo database. The init script drops `transport_nosql` and recreates its collections, so skip both scripts when restarting an existing database.
 
 ## Roles
 
@@ -66,7 +82,9 @@ npm run build && npm start        # in another terminal, after db setup and seed
 npm run test:api      # API role and rule tests (needs a freshly seeded database)
 ```
 
-Results and the manual checklist are in `docs/test_report.md`.
+Set `TEST_MONGO=1` and `BASE_URL` as needed to run the MongoDB CRUD and aggregation test on the same seeded demo instance. This suite creates test incidents. Use a disposable database.
+
+See `docs/test_report.md` for results and `docs/screenshots/` for demo evidence.
 
 ## Project layout
 

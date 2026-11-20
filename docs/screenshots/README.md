@@ -1,11 +1,16 @@
-Add your screenshots here before submission (PNG). Suggested set, in demo order:
+# Demo evidence
 
-1. login.png - login page
-2. dashboard.png - overview with KPI cards and charts
-3. incidents-list.png - filters and full-text search results
-4. incident-detail.png - status history, maintenance and the MongoDB detail report
-5. report-incident.png - the report form, and the same form after a rejected submission showing the database error
-6. driver-view.png - "My trips" signed in as ravi
-7. analytics.png - repeat breakdowns, follow-up chains, risk ranking
-8. mysql-terminal.png - a rejected double booking and a denied driver query (see tests/run_sql_tests.sh)
-9. mongosh.png - init.js output and an aggregation
+| Screenshot | What it shows |
+|---|---|
+| [Login](login.png) | Sign-in screen |
+| [Dashboard](dashboard.png) | Fleet, routes, problem tags and overheating |
+| [Incident search](incidents-list.png) | SQL full-text and MongoDB matching reports |
+| [Incident detail](incident-detail.png) | MySQL incident and the MongoDB narrative |
+| [Report form](report-incident-form.png) and [rejected report](report-incident.png) | Form and database validation of a CRITICAL incident |
+| [Driver view](driver-view.png) | Assigned trips visible to a driver |
+| [Analytics](analytics.png) | Follow-up chain and risk ranking |
+| [MySQL checks](mysql-terminal.png) | Route query, overlap rejection and denied driver query |
+| [MongoDB results](mongodb-results.png) | Initialization, document validation and dashboard response |
+| [Application code](application-code.png) | Dashboard API source for the MongoDB aggregation |
+
+The two query screenshots show outputs captured during the disposable seeded demo. The raw [MySQL table](mysql-results.txt) and [dashboard API fields](dashboard-response.json) are also available. See the [test report](../test_report.md) for the runtime and checks used.

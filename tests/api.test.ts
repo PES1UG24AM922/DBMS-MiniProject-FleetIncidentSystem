@@ -66,3 +66,45 @@ test("admin validation and analytics", async () => {
   assert.equal(stats.status, 200);
   assert.ok(stats.json.kpi.buses >= 3);
 });
+
+test("MongoDB incident report CRUD and dashboard aggregation", { skip: process.env.TEST_MONGO !== "1" }, async () => {
+  const admin = await login("admin");
+  const manager = await login("manager1");
+  assert.equal(admin.status, 200);
+  assert.equal(manager.status, 200);
+
+  const created = await call(admin.cookie, "POST", "/api/incidents", {
+    tripId: 5,
+    type: "DELAY",
+    severity: "LOW",
+    location: "Depot gate",
+    description: "The bus was delayed at the depot gate.",
+    tags: ["depot"],
+  });
+  assert.equal(created.status, 201);
+  assert.equal(created.json.mongoDetailSaved, true);
+
+  const path = `/api/incidents/${created.json.incidentId}/report`;
+  assert.deepEqual((await call(manager.cookie, "GET", path)).json.tags, ["depot"]);
+  const update = await call(manager.cookie, "PUT", path, {
+    narrative: "The depot confirmed that the bus was delayed.",
+    tags: ["verified"],
+  });
+  assert.equal(update.status, 200);
+  assert.equal((await call(manager.cookie, "POST", `/api/incidents/${created.json.incidentId}/comments`, {
+    text: "Depot notified.",
+  })).status, 201);
+  const updated = await call(manager.cookie, "GET", path);
+  assert.deepEqual(updated.json.tags, ["verified"]);
+  assert.equal(updated.json.comments[0].text, "Depot notified.");
+
+  const stats = await call(admin.cookie, "GET", "/api/dashboard/stats");
+  assert.equal(stats.status, 200);
+  assert.equal(stats.json.mongoAvailable, true);
+  assert.ok(stats.json.overheating.some((row: { alerts: number }) => row.alerts > 0));
+
+  assert.equal((await call(manager.cookie, "DELETE", path)).status, 403);
+  assert.equal((await call(admin.cookie, "DELETE", path)).status, 200);
+  assert.equal((await call(admin.cookie, "GET", path)).status, 404);
+  assert.equal((await call(admin.cookie, "GET", `/api/incidents/${created.json.incidentId}`)).status, 200);
+});

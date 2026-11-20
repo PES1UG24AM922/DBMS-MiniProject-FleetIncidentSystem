@@ -1,6 +1,6 @@
 # Relational Schema
 
-Primary keys are marked **PK**, foreign keys **FK**, unique keys **UK**. All relations are in third normal form. `incidents.bus_id` and `incidents.driver_id` repeat values from `trips` on purpose, for fast history queries; the trigger `trg_incident_bi` keeps them consistent with the trip.
+Primary keys are marked **PK**, foreign keys **FK**, and unique keys **UK**. The design generally follows third normal form. The incidents table deliberately repeats the trip's bus and driver for history queries. The `trg_incident_bi` trigger validates that these values agree with the trip when an incident is inserted.
 
 | Relation | Attributes |
 |---|---|
@@ -32,4 +32,4 @@ NOT NULL on every mandatory attribute; ENUM domains for status, role, severity a
 
 - 1NF: all attributes atomic; repeating stop lists are in `route_stops`.
 - 2NF: `route_stops` has one non-key attribute (`stop_sequence`) depending on the whole key.
-- 3NF: no transitive dependencies; bus, route and driver details live only in their own tables (apart from the deliberate incident copy noted above).
+- 3NF: master data for buses, routes and drivers lives in their own tables. Incidents are deliberately denormalized by storing the bus and driver in addition to the trip.

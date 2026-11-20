@@ -1,0 +1,10 @@
+{
+  "mongoAvailable": true,
+  "overheating": [
+    {
+      "_id": 1,
+      "alerts": 2,
+      "maxTemp": 121
+    }
+  ]
+}

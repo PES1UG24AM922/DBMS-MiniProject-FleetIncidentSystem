@@ -9,7 +9,7 @@ echo "Resetting transport_db from db/*.sql ..."; reset_db
 pass=0; fail=0
 run() { # name  mysql-args  sql  expected-regex  (expected regex is matched against output+errors)
   local out; out=$(mysql $2 transport_db -e "$3" 2>&1)
-  if echo "$out" | grep -Eqi "$4"; then printf 'PASS  %s\n' "$1"; pass=$((pass+1));
+  if printf '%s\n' "$out" | tr -d '\r' | grep -Eqi "$4"; then printf 'PASS  %s\n' "$1"; pass=$((pass+1));
   else printf 'FAIL  %s\n      got: %s\n' "$1" "$(echo "$out" | head -3)"; fail=$((fail+1)); fi
 }
 DRV="-uapp_driver -pCHANGE_ME_driver"; MGR="-uapp_manager -pCHANGE_ME_manager"; AUTH="-uapp_auth -pCHANGE_ME_auth"
