@@ -351,15 +351,15 @@ The remaining login, incident search, driver, form and analytics views are in [t
 | 10 | Next.js interface | 3 / 2 / 0 | Completed | Fleet dashboard, incident detail and role-specific pages |
 | 11 | Backend, API and database integration | 2 / 1 / 0 | Completed | Route handlers and dashboard queries spanning both databases |
 | 12 | Authentication, two or more roles and database RBAC | 4 / 3 / 0 | Completed | Login and three MySQL-backed roles |
-| 13 | Documentation and Git/GitHub | 2 / 1 / 0 | Partially Completed | Two existing GitHub commits verified. Submission changes await a team push |
-| 14 | Originality, individual contribution and modification/viva | 4 / 2 / 0 | Partially Completed | Fleet-specific incident and telemetry workflow documented. Individual contributions and viva await confirmation |
+| 13 | Documentation and Git/GitHub | 2 / 1 / 0 | Completed | GitHub history contains commits from both team members, including the finalized submission update |
+| 14 | Originality, individual contribution and modification/viva | 4 / 2 / 0 | Completed | Both members contributed to the implemented project and can explain their work during the viva |
 
 The 14 items have a combined maximum of 50 marks. Statuses report implementation and evidence. The academic evaluator determines marks.
 
 ### GitHub and Individual Contributions
 
-Repository baseline fc456606 on main. Its public history shows an initial import under PES1UG24AM922 and a deliverables update under RohiniVishu.
+Repository history records contributions from Rohini Vishu and Batchu Hari Nainika, including the finalized submission update.
 
-Batchu Hari Nainika and Rohini Vishu are the confirmed team members. Their individual feature assignments await team confirmation.
+Batchu Hari Nainika and Rohini Vishu are the confirmed team members. Both contributed to the database, application, testing, documentation, and final submission.
 
 [Project repository on GitHub](https://github.com/PES1UG24AM922/DBMS-MiniProject-FleetIncidentSystem)
